@@ -1,0 +1,385 @@
+﻿<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
+<!--<link rel="stylesheet" type="text/css" href="/sites/QMS-GenericDMS/Style%20Library/assets/js/libs/DataTables/extensions/Bootstrap/dataTables.bootstrap.min.css">-->
+
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/jquery/jquery-1.11.2.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/jquery/jquery-migrate-1.2.1.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/bootstrap/bootstrap.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/spin.js/spin.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/autosize/jquery.autosize.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/multi-select/jquery.multi-select.js"></script>
+<script src="/sites/QMS-GenericDMS/Style%20Library/assets/js/libs/bootstrap/bootstrap-datepicker.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/nanoscroller/jquery.nanoscroller.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/jquery-validation/dist/additional-methods.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/core/source/App.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/core/source/AppNavigation.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/core/source/AppForm.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/sweetalert/sweetalert2.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style%20Library/GenericDMS/JS/moment.js"></script>
+<script src='/sites/QMS-GenericDMS/Style Library/assets/js/libs/DataTables/jquery.dataTables.min.1.10.12.js'></script>
+<script src='/sites/QMS-GenericDMS/Style Library/assets/js/libs/DataTables/dataTables.bootstrap.min.js'></script>
+<script src='/sites/QMS-GenericDMS/Style Library/assets/js/libs/DataTables/dataTables.buttons.min.js'></script>
+<script src='/sites/QMS-GenericDMS/Style Library/assets/js/libs/DataTables/jszip.min.js'></script>
+<script src='/sites/QMS-GenericDMS/Style Library/assets/js/libs/DataTables/buttons.html5.min.js'></script>
+<script src='/sites/QMS-GenericDMS/Style Library/assets/js/libs/DataTables/buttons.print.min.js'></script>
+
+<script type="text/javascript" src="/_layouts/15/clientpeoplepicker.js?rev=kOIhJa70anmQclPB3z5S4Q%3D%3DTAG0"></script>
+<script type="text/javascript" src="/sites/QMS-GenericDMS/style%20library/assets/pnp/fetch.min.js"></script>
+<script type="text/javascript" src="/sites/QMS-GenericDMS/style%20library/assets/pnp/es6-promise.min.js"></script>
+<script type="text/javascript" src="/sites/QMS-GenericDMS/style%20library/assets/pnp/pnp.min.js"></script>
+<script type="text/javascript" src="/sites/QMS-GenericDMS/style%20library/assets/angular/angular.min.js"></script>
+<script>
+    //Init Promise
+    ES6Promise.polyfill();
+
+    //Setup PNP header
+    $pnp.setup({
+        headers: {
+            "Accept": "application/json; odata=verbose"
+                //,"X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                //"content-type": "application/json;odata=verbose",
+                //"If-Match": "*"
+        }
+    });
+</script>
+
+<style>
+.dt-buttons {
+        display: block;
+        
+    }
+    
+    .ApprovalHistoryTable_wrapper {
+        margin-left: 100px;
+    }
+    
+    th {
+        background-color: steelblue;
+        color: white;
+        text-align: center;
+    }
+    
+    tr {
+        text-align: center;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+}
+
+#loading {
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   position: fixed;
+   display: block;
+   opacity: 0.7;
+   background-color: #fff;
+   z-index: 99;
+   text-align: center;
+}
+
+#loading-image {
+  position: absolute;
+ <!-- top: 100px;-->
+  left: 240px;
+  z-index: 100;
+  margin-left:30%;
+}
+</style>
+<div id="loading">
+  <img id="loading-image" src="/sites/QMS-GenericDMS/PublishingImages/LoadingScreen.gif" style="display:block"alt="Loading..." />
+</div>
+<div id="TestLoading" style="width: 90%;padding-left: 5%;">
+
+<div  class="row">
+    <div class="col-sm-3">
+        <b>Document Folder: </b>
+        <!-- <select id="DocumentLibraries" onchange="OnLibraryChange()"> </select>-->
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+            <select name="Application" id="DocumentLibraries" class="form-control selectpicker">
+            </select>
+            <div class="form-control-line"></div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <b>From: </b>
+
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            <input name="Start_Date" id="StartDate" placeholder="Start Date" class="form-control" type="text" autocomplete="off">
+            <div class="form-control-line"></div>
+        </div>
+
+        <!--</b><input type="text" id="StartDate">  -->
+    </div>
+    <div class="col-sm-3">
+        <b>To: </b>
+        <!--  <input id="EndDate">  -->
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            <input name="End_Date" id="EndDate" placeholder="End Date" class="form-control" type="text" disabled="" autocomplete="off">
+            <div class="form-control-line"></div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="input-group">
+            <br/>
+            <button id="Search" class="btn btn-success" type="button" onclick="SearchData()"> Search</button>
+        </div>
+    </div>
+
+</div>
+<br/>
+<div class="row">
+
+    <div style="margin-left:0%">
+        <table id="DocumentReportTable" class="table">
+            <!--  <table id="AllChangesTable" class="display nowrap" width="100%">-->
+            <thead>
+                <tr>
+                    <th style="width:20%">Library Name</th>
+                    <th style="width:20%"> Document Count</th>
+
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</div>
+
+</div>
+
+<script type="text/javascript">
+var StartDate;
+var EndDate;
+var Libraries = [];
+var CamlQueries = [];
+var ItemCount = [];
+var CamlQuery;
+
+
+$(document).ready(function () {
+
+	ShowLoadingScreen();
+	console.log("In Document Ready");
+
+	CamlQuery = "";
+	$("#StartDate").datepicker({
+		format: 'dd-mm-yyyy',
+		endDate: new Date(),
+		autoclose: true,
+	
+	}).on("change", function () {
+		// EndDateforDelayedReports="";
+		StartDate = moment($(this).val(), "DD-MM-YYYY").format("YYYY-MM-DD") + "T00:00:00Z";
+		var StartDateforDP = $(this).val();
+		document.getElementById("EndDate").disabled = false;
+		$("#EndDate").val("");
+		$("#EndDate").datepicker('remove');
+		debugger;
+		
+		$("#EndDate").datepicker({
+			format: 'dd-mm-yyyy',
+			startDate: StartDateforDP,
+			endDate: new Date(),
+			autoclose: true
+		}).on("change", function () {
+
+			EndDate = moment($(this).val(), "DD-MM-YYYY").format("YYYY-MM-DD") + "T00:00:00Z"; // $(this).val();
+			
+
+		});
+	});
+	FillDocumentLibraries();
+	HideLoadingScreen();
+
+});
+
+function FillDocumentLibraries() {
+	var TempData = '<option value=0>All Libraries</option><option value=1>MISReport</option><option value=2>MixDesign</option><option value=3>QCLaboratoryAuditReport</option><option value=4>BatchingPlantAuditReport</option><option value=5>ISOAuditReport</option><option value=6>MethodStatement</option><option value=7>MRMPresentation</option><option value=8>PPRPresentation</option><option value=9>QualityAssurancePlan</option><option value=10>SiteSurveillanceReport</option></select>';
+	$("#DocumentLibraries").append(TempData);
+
+	/*;*/
+	GetLibraries();
+}
+
+
+function getData(strListTitle, viewXml) {
+	debugger;
+	var currentSite = _spPageContextInfo.webAbsoluteUrl;
+	$.ajax({
+		type: "POST",
+		async: false,
+		headers: {
+			"accept": "application/json;odata=verbose",
+			"content-type": "application/json;odata=verbose",
+			"X-RequestDigest": $("#__REQUESTDIGEST").val()
+		},
+		
+		url: currentSite + '/_api/web/Lists/GetByTitle(\'' + strListTitle + '\')/GetItems(query=@v1)?$top=100&@v1={"ViewXml":"' + viewXml + '"}',
+		success: function (data) {
+			debugger;
+
+			console.log(data.d.results.length);
+			$("#EndDate").val("");
+
+			$("#StartDate").val("");
+			ItemCount.push(data.d.results.length);
+			Libraries.push(strListTitle);
+		
+
+		},
+		failure: function (error) {
+			console.log('Error in AJAX: ' + error.message);
+		}
+	});
+}
+
+function SearchData() {
+	debugger;
+	ShowLoadingScreen();
+	CamlQuery = "";
+	Libraries = [];
+	ItemCount = [];
+	var ExistingDataTable = $("#DocumentReportTable").DataTable();
+	ExistingDataTable.clear();
+	ExistingDataTable.destroy();
+	var Validation;
+	try {
+
+		if ($("#DocumentLibraries option:selected").text() == "All Libraries") {
+			GetLibraries();
+
+		} else {
+			Validation = ValidateControls();
+			if (Validation) {
+				SetCamlQuery();
+				getData($("#DocumentLibraries option:selected").text(), CamlQuery);
+				BindTableData2();
+				StartDate = "";
+				EndDate = "";
+
+
+			}
+		}
+		HideLoadingScreen();
+	
+	} catch (error) {
+		console.log('Error in Search: ' + error.message);
+		HideLoadingScreen();
+	}
+
+}
+
+
+
+function GetLibraries() {
+
+	var Validation = ValidateControls();
+	if (Validation) {
+		$("#DocumentLibraries> option").each(function () {
+			console.log(this.text + ' ' + this.value);
+			if (this.text != null && this.text != "" && this.text != "All Libraries") {
+
+				GetAllLibrariesDataCount(this.text);
+				//Libraries.push(this.text);
+				BindTableData2();
+			}
+		});
+	}
+
+
+}
+
+function GetAllLibrariesDataCount(LibraryName) {
+	debugger;
+	SetCamlQuery();
+	getData(LibraryName, CamlQuery);
+
+
+}
+
+
+function ValidateControls() {
+	if (!(StartDate == null || StartDate == "") && (EndDate == null || EndDate == "")) {
+		alert("Enter 'To' Date");
+		return false;
+
+	} else
+		return true;
+
+}
+
+function SetCamlQuery() {
+	CamlQuery = "";
+	if (StartDate == null || StartDate == "") {
+		CamlQuery = "<View Scope='RecursiveAll'><Query><Where><Eq><FieldRef Name='FSObjType' /><Value Type='Integer'>0</Value></Eq></Where><OrderBy><FieldRef Name='Title' Ascending='False' /></OrderBy></Query></View>";
+
+		// getData(ListName , Caml);
+	} else {
+		CamlQuery = "<View  Scope='RecursiveAll'><Query><Where><And><Geq><FieldRef Name='Modified' /><Value IncludeTimeValue='FALSE' Type='DateTime'>" + StartDate + "</Value></Geq><And><Leq><FieldRef Name='Modified' /><Value IncludeTimeValue='FALSE' Type='DateTime'>" + EndDate + "</Value></Leq><Eq><FieldRef Name='FSObjType' /><Value Type='Integer'>0</Value></Eq></And></And></Where></Query></View>";
+	}
+
+
+}
+
+function BindTableData2() {
+	var ExistingDataTable = $("#DocumentReportTable").DataTable();
+	ExistingDataTable.clear();
+	ExistingDataTable.destroy();
+
+	if (Libraries.length > 0) {
+		for (var i = 0; i < Libraries.length; i++) {
+			$('#DocumentReportTable tbody').append(
+
+				' <tr>' +
+				'<td style="width:20%">' + Libraries[i] + '</th>' +
+				'<td style="width:20%">' + ItemCount[i] + '</td>' +
+
+				' </tr>'
+
+
+			);
+		}
+
+		var DocumentReportTable = $('#DocumentReportTable').DataTable({
+			"paging": true,
+			"info": false,
+			searching: false,
+			dom: 'Bfrtip',
+			buttons: [{
+				extend: 'excel',
+				text: 'Export To Excel',
+				className: 'red'
+			}],
+			"language": {
+				"emptyTable": "No Data Found"
+			}
+
+		});
+
+	}
+
+
+}
+
+function ShowLoadingScreen()
+{
+	$("#TestLoading").hide();
+	$("#loading").show();
+}
+function HideLoadingScreen()
+{
+	$("#loading").hide();
+	$("#TestLoading").show();
+}
+
+
+</script>

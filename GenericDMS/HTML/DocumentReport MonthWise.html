@@ -1,0 +1,398 @@
+﻿<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
+<!--<link rel="stylesheet" type="text/css" href="/sites/QMS-GenericDMS/Style%20Library/assets/js/libs/DataTables/extensions/Bootstrap/dataTables.bootstrap.min.css">-->
+
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/jquery/jquery-1.11.2.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/jquery/jquery-migrate-1.2.1.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/bootstrap/bootstrap.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/spin.js/spin.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/autosize/jquery.autosize.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/multi-select/jquery.multi-select.js"></script>
+<script src="/sites/QMS-GenericDMS/Style%20Library/assets/js/libs/bootstrap/bootstrap-datepicker.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/nanoscroller/jquery.nanoscroller.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/jquery-validation/dist/additional-methods.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/core/source/App.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/core/source/AppNavigation.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/core/source/AppForm.js"></script>
+<script src="/sites/QMS-GenericDMS/Style Library/assets/js/libs/sweetalert/sweetalert2.min.js"></script>
+<script src="/sites/QMS-GenericDMS/Style%20Library/GenericDMS/JS/moment.js"></script>
+<script src='/sites/QMS-GenericDMS/Style Library/assets/js/libs/DataTables/jquery.dataTables.min.1.10.12.js'></script>
+<script src='/sites/QMS-GenericDMS/Style Library/assets/js/libs/DataTables/dataTables.bootstrap.min.js'></script>
+<script src='/sites/QMS-GenericDMS/Style Library/assets/js/libs/DataTables/dataTables.buttons.min.js'></script>
+<script src='/sites/QMS-GenericDMS/Style Library/assets/js/libs/DataTables/jszip.min.js'></script>
+<script src='/sites/QMS-GenericDMS/Style Library/assets/js/libs/DataTables/buttons.html5.min.js'></script>
+<script src='/sites/QMS-GenericDMS/Style Library/assets/js/libs/DataTables/buttons.print.min.js'></script>
+
+<script type="text/javascript" src="/_layouts/15/clientpeoplepicker.js?rev=kOIhJa70anmQclPB3z5S4Q%3D%3DTAG0"></script>
+<script type="text/javascript" src="/sites/QMS-GenericDMS/style%20library/assets/pnp/fetch.min.js"></script>
+<script type="text/javascript" src="/sites/QMS-GenericDMS/style%20library/assets/pnp/es6-promise.min.js"></script>
+<script type="text/javascript" src="/sites/QMS-GenericDMS/style%20library/assets/pnp/pnp.min.js"></script>
+<script type="text/javascript" src="/sites/QMS-GenericDMS/style%20library/assets/angular/angular.min.js"></script>
+
+<script>
+    //Init Promise
+    ES6Promise.polyfill();
+
+    //Setup PNP header
+    $pnp.setup({
+        headers: {
+            "Accept": "application/json; odata=verbose"
+                //,"X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                //"content-type": "application/json;odata=verbose",
+                //"If-Match": "*"
+        }
+    });
+</script>
+
+<style>
+   .dt-buttons {
+   display: block;
+   }
+   .ApprovalHistoryTable_wrapper {
+   margin-left: 100px;
+   }
+   th {
+   background-color: steelblue;
+   color: white;
+   text-align: center;
+   }
+   tr {
+   text-align: center;
+   }
+   tr:nth-child(even) {
+   background-color: #f2f2f2;
+   }
+   }
+   #loading {
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   position: fixed;
+   display: block;
+   opacity: 0.7;
+   background-color: #fff;
+   z-index: 99;
+   text-align: center;
+   }
+   #loading-image {
+   position: absolute;
+   top: 100px;
+   left: 240px;
+   z-index: 100;
+   margin-left:30%;
+   }
+</style>
+<div id="loading">
+    <img id="loading-image" src="/sites/QMS-GenericDMS/PublishingImages/LoadingScreen.gif" alt="Loading..." />
+
+</div>
+<div id="TestLoading" style="width: 90%;padding-left: 5%;">
+   <div  class="row">
+      <div class="col-sm-4">
+         <b>Document Folder: </b>
+         <!-- <select id="DocumentLibraries" onchange="OnLibraryChange()"> </select>-->
+         <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
+            <select name="Application" id="DocumentLibraries" class="form-control selectpicker">
+            </select>
+            <div class="form-control-line"></div>
+         </div>
+      </div>
+      <div class="col-sm-4">
+         <b>Year: </b>
+         <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            <select name="Year" id="Year" class="form-control selectpicker">
+            </select>
+            <div class="form-control-line"></div>
+         </div>
+         <!--</b><input type="text" id="StartDate">  -->
+      </div>
+      <div class="col-sm-4">
+         <div class="input-group">
+            <br/>
+            <button id="Search" class="btn btn-success" type="button" onclick="SearchData()"> Search</button>
+         </div>
+      </div>
+   </div>
+   <br/>
+   <div class="row">
+      <div style="margin-left:0%">
+         <table id="DocumentReportTable" class="table">
+            <!--  <table id="AllChangesTable" class="display nowrap" width="100%">-->
+            <thead>
+               <tr>
+                  <th>LibraryName</th>
+                  <th>January</th>
+                  <th>February</th>
+                  <th>March</th>
+                  <th>April</th>
+                  <th>May</th>
+                  <th>June</th>
+                  <th>July</th>
+                  <th>August</th>
+                  <th>September</th>
+                  <th>October</th>
+                  <th>November</th>
+                  <th>December</th>
+               </tr>
+            </thead>
+            <tbody></tbody>
+         </table>
+      </div>
+   </div>
+</div>
+
+<script type="text/javascript">
+
+var Libraries = [];
+var CamlQuery;
+var DataCountArray = [];
+
+
+$(document).ready(function() {
+
+    ShowLoadingScreen();
+    console.log("In Document Ready");
+    CamlQuery = "";
+    FillYearDropdown();
+    FillDocumentLibraries();
+    HideLoadingScreen();
+
+});
+
+function FillDocumentLibraries() {
+   var TempData = '<option value=0>All Libraries</option><option value=1>MISReport</option><option value=2>MixDesign</option><option value=3>QCLaboratoryAuditReport</option><option value=4>BatchingPlantAuditReport</option><option value=5>ISOAuditReport</option><option value=6>MethodStatement</option><option value=7>MRMPresentation</option><option value=8>PPRPresentation</option><option value=9>QualityAssurancePlan</option><option value=10>SiteSurveillanceReport</option></select>';
+    $("#DocumentLibraries").append(TempData);
+
+    /*;*/
+    GetLibraries();
+}
+
+function FillYearDropdown() {
+    var TempData = '<option value=0>All</option><option value=1>2018</option><option value=2>2019</option><option value=3>2020</option></select>';
+    $("#Year").append(TempData);
+
+}
+
+
+
+function getData(strListTitle, viewXml) {
+
+    var currentSite = _spPageContextInfo.webAbsoluteUrl;
+    $.ajax({
+        type: "POST",
+        async: false,
+        headers: {
+            "accept": "application/json;odata=verbose",
+            "content-type": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val()
+        },
+
+        url: currentSite + '/_api/web/Lists/GetByTitle(\'' + strListTitle + '\')/GetItems(query=@v1)?$top=1000&@v1={"ViewXml":"' + viewXml + '"}',
+        success: function(data) {
+
+			var DataCountTemp = new Array();
+            console.log(data.d.results.length);
+            if (data.d.results.length > 0) {
+                var ModifiedMonth = data.d.results[0].ModifiedMonth;
+             //  DataCountTemp =[];
+                var DocumentCount = 0;
+                for (var i = 0; i < data.d.results.length; i++) {
+                	    if (data.d.results[i].ModifiedMonth != ModifiedMonth) {
+                        DataCountTemp[ModifiedMonth] = DocumentCount;
+                        DocumentCount =1;
+                        ModifiedMonth = data.d.results[i].ModifiedMonth;
+
+
+                    } else {
+                      DocumentCount =  DocumentCount + 1;
+                    }
+                }
+
+                DataCountTemp[ModifiedMonth] = DocumentCount;
+                DataCountTemp["LibraryName"] = strListTitle;
+                AddDataCount(DataCountTemp);
+            }
+            else
+            {
+            	DataCountTemp["LibraryName"] = strListTitle;
+                AddDataCount(DataCountTemp);
+
+            }
+
+
+
+        },
+        failure: function(error) {
+            console.log('Error in AJAX: ' + error.message);
+        }
+    });
+}
+
+function SearchData() {
+    debugger;
+    ShowLoadingScreen();
+    CamlQuery = "";
+    DataCountArray = [];
+    var ExistingDataTable = $("#DocumentReportTable").DataTable();
+    ExistingDataTable.clear();
+    ExistingDataTable.destroy();
+   
+    try {
+
+        if ($("#DocumentLibraries option:selected").text() == "All Libraries") {
+            GetLibraries();
+
+        } else {
+
+            SetCamlQuery();
+            getData($("#DocumentLibraries option:selected").text(), CamlQuery);
+            BindTableData2();
+
+
+
+        }
+       
+
+    } catch (error) {
+        console.log('Error in Search: ' + error.message);
+        HideLoadingScreen();
+    }
+
+}
+
+
+
+function GetLibraries() {
+
+
+    $("#DocumentLibraries> option").each(function() {
+        console.log(this.text);
+        if (this.text != null && this.text != "" && this.text != "All Libraries") {
+
+
+            GetAllLibrariesDataCount(this.text);
+
+        }
+    });
+    BindTableData2();
+
+
+}
+
+function GetAllLibrariesDataCount(LibraryName) {
+
+    SetCamlQuery();
+    getData(LibraryName, CamlQuery);
+
+
+
+}
+
+
+function SetCamlQuery() {
+    CamlQuery = "";
+    var SelectedYear = $("#Year option:selected").text();
+
+    if (SelectedYear == null || SelectedYear == "" || SelectedYear == "All") {
+        //CamlQuery = "<View Scope='RecursiveAll'><Query><Where><Eq><FieldRef Name='FSObjType' /><Value Type='Integer'>0</Value></Eq></Where><OrderBy><FieldRef Name='Title' Ascending='False' /></OrderBy></Query></View>";
+        CamlQuery = "<View Scope='RecursiveAll'><Query><Where><Eq><FieldRef Name='FSObjType' /><Value Type='Integer'>0</Value></Eq></Where><GroupBy collapse='true'><FieldRef Name='ModifiedMonth' /></GroupBy></Query><ViewFields><FieldRef Name='ModifiedMonth' /></ViewFields><QueryOptions /></View>";
+
+        // getData(ListName , Caml);
+    } else {
+        CamlQuery = "<View Scope='RecursiveAll'><Query><Where><And><Eq><FieldRef Name='ModifiedYear' /><Value Type='Calculated'>" + SelectedYear + "</Value></Eq><Eq><FieldRef Name='FSObjType' /><Value Type='Integer'>0</Value></Eq></And></Where><GroupBy collapse='true'><FieldRef Name='ModifiedMonth' /></GroupBy></Query> <ViewFields><FieldRef Name='ModifiedMonth' /></ViewFields><QueryOptions /></View>";
+    }
+
+
+}
+
+function BindTableData2() {
+    debugger;
+    var ExistingDataTable = $("#DocumentReportTable").DataTable();
+    ExistingDataTable.clear();
+    ExistingDataTable.destroy();
+
+    if (DataCountArray.length > 0) {
+        for (var i = 0; i < DataCountArray.length; i++) {
+            $('#DocumentReportTable tbody').append(
+
+                ' <tr>' +
+
+                '<td style="width:8%"> ' + DataCountArray[i]["LibraryName"] + '</td>' +
+                '<td style="width:8%">' + DataCountArray[i]["January"] + '</td>' +
+                ' <td style="width:8%">' + DataCountArray[i]["February"] + '</td>' +
+                ' <td style="width:8%">' + DataCountArray[i]["March"] + '</td>' +
+                '<td style="width:8%">' + DataCountArray[i]["April"] + '</td>' +
+                '<td style="width:8%">' + DataCountArray[i]["May"] + '</td>' +
+                '<td style="width:8%">' + DataCountArray[i]["June"] + '</td>' +
+                '<td style="width:8%">' + DataCountArray[i]["July"] + '</td>' +
+                ' <td style="width:8%">' + DataCountArray[i]["August"] + '</td>' +
+                ' <td style="width:8%">' + DataCountArray[i]["September"] + '</td>' +
+                '<td style="width:8%">' + DataCountArray[i]["October"] + '</td>' +
+                '<td style="width:8%">' + DataCountArray[i]["November"] + '</td>' +
+                ' <td style="width:8%">' + DataCountArray[i]["December"] + '</td>' +
+                ' </tr>'
+
+
+            );
+        }
+
+
+
+    }
+    var DocumentReportTable = $('#DocumentReportTable').DataTable({
+        "paging": true,
+        "info": false,
+        searching: false,
+        dom: 'Bfrtip',
+        buttons: [{
+            extend: 'excel',
+            text: 'Export To Excel',
+            className: 'red'
+        }],
+        "language": {
+            "emptyTable": "No Data Found"
+        }
+
+    });
+
+ HideLoadingScreen();
+}
+
+function ShowLoadingScreen() {
+    $("#TestLoading").hide();
+    $("#loading").show();
+}
+
+function HideLoadingScreen() {
+    $("#loading").hide();
+    $("#TestLoading").show();
+}
+
+
+function AddDataCount(DataCountTemp) {
+
+    //condition ? exprT : exprF 
+
+    var DataCount = new Array();
+
+    DataCount["LibraryName"] = DataCountTemp["LibraryName"];
+    (DataCountTemp["January"] != null) ? DataCount["January"] = DataCountTemp["January"]: DataCount["January"] = 0;
+    (DataCountTemp["February"] != null) ? DataCount["February"] = DataCountTemp["February"]: DataCount["February"] = 0;
+    (DataCountTemp["March"] != null) ? DataCount["March"] = DataCountTemp["March"]: DataCount["March"] = 0;
+    (DataCountTemp["April"] != null) ? DataCount["April"] = DataCountTemp["April"]: DataCount["April"] = 0;
+    (DataCountTemp["May"] != null) ? DataCount["May"] = DataCountTemp["May"]: DataCount["May"] = 0;
+    (DataCountTemp["June"] != null) ? DataCount["June"] = DataCountTemp["June"]: DataCount["June"] = 0;
+    (DataCountTemp["July"] != null) ? DataCount["July"] = DataCountTemp["July"]: DataCount["July"] = 0;
+    (DataCountTemp["August"] != null) ? DataCount["August"] = DataCountTemp["August"]: DataCount["August"] = 0;
+    (DataCountTemp["September"] != null) ? DataCount["September"] = DataCountTemp["September"]: DataCount["September"] = 0;
+    (DataCountTemp["October"] != null) ? DataCount["October"] = DataCountTemp["October"]: DataCount["October"] = 0;
+    (DataCountTemp["November"] != null) ? DataCount["November"] = DataCountTemp["November"]: DataCount["November"] = 0;
+    (DataCountTemp["December"] != null) ? DataCount["December"] = DataCountTemp["December"]: DataCount["December"] = 0;
+    DataCountArray.push(DataCount);
+}
+</script>
